@@ -1,6 +1,8 @@
 import { useEffect, useMemo, useState } from "react";
 import { signUp } from "./api";
 import { Input } from "./components/Input";
+import { useTranslation } from "react-i18next";
+import { LanguageSelector } from "../../shared/components/LanguageSelector";
 
 export function SignUp() {
   const [username, setUsername] = useState();
@@ -11,6 +13,7 @@ export function SignUp() {
   const [successMessage, setSuccessMessage] = useState();
   const [errors, setErrors] = useState({});
   const [generalError, setGeneralError] = useState();
+  const { t } = useTranslation();
 
   useEffect(() => {
     setErrors((lastErrors) => {
@@ -29,6 +32,15 @@ export function SignUp() {
       };
     });
   }, [email]);
+
+  useEffect(() => {
+    setErrors((lastErrors) => {
+      return {
+        ...lastErrors,
+        password: undefined,
+      };
+    });
+  }, [password]);
 
   const onSubmit = async (event) => {
     event.preventDefault();
@@ -50,7 +62,7 @@ export function SignUp() {
       ) {
         setErrors(axiosError.response.data.validationErrors);
       } else {
-        setGeneralError("Unexpected error occured. Please try again");
+        setGeneralError(t("genericError"));
       }
     } finally {
       setApiProgress(false);
@@ -59,7 +71,7 @@ export function SignUp() {
 
   const passwordRepeatError = useMemo(() => {
     if (password && password !== passwordRepeat) {
-      return "Password mismatch";
+      return t("passwordMismatch");
     }
     return "";
   }, [password, passwordRepeat]);
@@ -69,31 +81,31 @@ export function SignUp() {
       <div className="col-lg-6 offset-lg-3 col-sm-8 offset-sm-2">
         <form onSubmit={onSubmit} className="card">
           <div className="text-center card-header">
-            <h1>Sign Up</h1>
+            <h1>{t('signUp')}</h1>
           </div>
           <div className="card-body">
             <Input
               id="username"
-              label="Username"
+              label={t("username")}
               error={errors.username}
               onChange={(event) => setUsername(event.target.value)}
             />
             <Input
               id="email"
-              label="E-mail"
+              label={t("email")}
               error={errors.email}
               onChange={(event) => setEmail(event.target.value)}
             />
             <Input
               id="password"
-              label="Password"
+              label={t("password")}
               type="password"
               error={errors.password}
               onChange={(event) => setPassword(event.target.value)}
             />
             <Input
               id="passwordRepeat"
-              label="Password Repeat"
+              label={t("passwordRepeat")}
               type="password"
               error={passwordRepeatError}
               onChange={(event) => setPasswordRepeat(event.target.value)}
@@ -117,11 +129,12 @@ export function SignUp() {
                     aria-hidden="true"
                   ></span>
                 )}
-                Sign Up
+                {t('signUp')}
               </button>
             </div>
           </div>
         </form>
+        <LanguageSelector />
       </div>
     </div>
   );

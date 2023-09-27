@@ -20,7 +20,7 @@ public class User {
     @GeneratedValue
     long id;
 
-    @NotBlank
+    @NotBlank(message = "{boonote.constraint.username.notblank}")
     @Size(min = 4, max = 255)
     String username;
 
@@ -30,7 +30,7 @@ public class User {
     String email;
 
     @Size(min = 8, max = 255)
-    @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).*$")
+    @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).*$", message = "{boonote.constraint.password.pattern}")
     String password;
 
     public long getId() {
