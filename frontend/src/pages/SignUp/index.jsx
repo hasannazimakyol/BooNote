@@ -2,7 +2,8 @@ import { useEffect, useMemo, useState } from "react";
 import { signUp } from "./api";
 import { Input } from "./components/Input";
 import { useTranslation } from "react-i18next";
-import { LanguageSelector } from "../../shared/components/LanguageSelector";
+import { Alert } from "@/shared/components/Alert";
+import { Spinner } from "@/shared/components/Spinner";
 
 export function SignUp() {
   const [username, setUsername] = useState();
@@ -57,9 +58,9 @@ export function SignUp() {
       setSuccessMessage(response.data.message);
     } catch (axiosError) {
       if (axiosError.response?.data) {
-        if(axiosError.response.data.status === 400){
+        if (axiosError.response.data.status === 400) {
           setErrors(axiosError.response.data.validationErrors);
-        } else{
+        } else {
           setGeneralError(axiosError.response.data.message);
         }
       } else {
@@ -82,7 +83,7 @@ export function SignUp() {
       <div className="col-lg-6 offset-lg-3 col-sm-8 offset-sm-2">
         <form onSubmit={onSubmit} className="card">
           <div className="text-center card-header">
-            <h1>{t('signUp')}</h1>
+            <h1>{t("signUp")}</h1>
           </div>
           <div className="card-body">
             <Input
@@ -111,12 +112,8 @@ export function SignUp() {
               error={passwordRepeatError}
               onChange={(event) => setPasswordRepeat(event.target.value)}
             />
-            {successMessage && (
-              <div className="alert alert-success">{successMessage}</div>
-            )}
-            {generalError && (
-              <div className="alert alert-danger">{generalError}</div>
-            )}
+            {successMessage && <Alert>{successMessage}</Alert>}
+            {generalError && <Alert styleType="danger">{generalError}</Alert>}
             <div className="text-center">
               <button
                 disabled={
@@ -124,18 +121,12 @@ export function SignUp() {
                 }
                 className="btn btn-primary"
               >
-                {apiProgress && (
-                  <span
-                    className="spinner-border spinner-border-sm"
-                    aria-hidden="true"
-                  ></span>
-                )}
-                {t('signUp')}
+                {apiProgress && <Spinner sm={true} />}
+                {t("signUp")}
               </button>
             </div>
           </div>
         </form>
-        <LanguageSelector />
       </div>
     </div>
   );
