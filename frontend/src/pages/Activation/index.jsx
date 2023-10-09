@@ -33,7 +33,6 @@ export function Activation() {
           <Spinner />
         </Alert>
       )}
-      <Alert>{successMessage}</Alert>
       {successMessage && <Alert>{successMessage}</Alert>}
       {errorMessage && <Alert styleType="danger">{errorMessage}</Alert>}
     </>
