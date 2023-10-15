@@ -1,4 +1,4 @@
-import { Link, Outlet } from "react-router-dom";
+import { Outlet } from "react-router-dom";
 import { LanguageSelector } from "./shared/components/LanguageSelector";
 import { NavBar } from "./shared/components/NavBar";
 
