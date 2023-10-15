@@ -5,5 +5,6 @@
   "password": "Şifre",
   "passwordRepeat": "Şifre Tekrarı",
   "passwordMismatch": "Şifreniz eşleşmiyor",
-  "genericError": "Beklenmedik bir hata oluştu. Lütfen bir daha deneyin"
+  "genericError": "Beklenmedik bir hata oluştu. Lütfen bir daha deneyin",
+  "userNotFoundError": "Kullanıcı bulunanmadı"
 }
