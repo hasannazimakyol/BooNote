@@ -1,5 +1,6 @@
 package com.boonote.ws.user;
 
+import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.dao.DataIntegrityViolationException;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
 import com.boonote.ws.email.EmailService;
 import com.boonote.ws.user.exception.ActivationNotificationException;
 import com.boonote.ws.user.exception.InvalidTokenException;
+import com.boonote.ws.user.exception.NotFoundException;
 import com.boonote.ws.user.exception.NotUniqueEmailException;
 
 import jakarta.transaction.Transactional;
@@ -58,6 +60,10 @@ public class UserService {
 
     public Page<User> getUsers(Pageable page) {
         return userRepository.findAll(page);
+    }
+
+    public User getUser(long id) {
+        return userRepository.findById(id).orElseThrow(() -> new NotFoundException(id));
     }
 
 }

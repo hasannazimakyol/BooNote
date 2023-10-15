@@ -24,6 +24,11 @@ export function Activation() {
     }
 
     activate();
+  }, [token]);
+
+  useEffect(() => {
+    console.log("component is mounted")
+    return () => console.log('component is unmounted')
   }, []);
 
   return (

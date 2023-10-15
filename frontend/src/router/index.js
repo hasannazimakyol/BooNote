@@ -4,6 +4,7 @@ import { SignUp } from "@/pages/SignUp/index.jsx";
 import { Home } from "@/pages/Home/index.jsx";
 import App from "@/App.jsx";
 import { Activation } from "@/pages/Activation/index.jsx";
+import { User } from "@/pages/User/index.jsx";
 
 export default createBrowserRouter([
     {
@@ -22,6 +23,10 @@ export default createBrowserRouter([
             {
                 path: "/activation/:token",
                 Component: Activation,
+            },
+            {
+                path: "/user/:id",
+                Component: User,
             }
         ]
     }
