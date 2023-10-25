@@ -1,17 +1,21 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Input } from "@/shared/components/Input";
 import { Button } from "@/shared/components/Button";
 import { login } from "./api";
 import { Alert } from "@/shared/components/Alert";
+import { AuthContext } from "@/shared/state/context";
+import { useNavigate } from "react-router-dom";
 
-export function Login() {
+export function Login({ onLoginSuccess }) {
+  const authState = useContext(AuthContext);
   const { t } = useTranslation();
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
   const [generalError, setGeneralError] = useState();
   const [errors, setErrors] = useState({});
   const [apiProgress, setApiProgress] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     setErrors((lastErrors) => {
@@ -42,7 +46,10 @@ export function Login() {
         email,
         password,
       });
+      authState.onLoginSuccess(response.data.user);
       // setSuccessMessage(response.data.message);
+
+      navigate("/");
     } catch (axiosError) {
       if (axiosError.response?.data) {
         if (axiosError.response.data.status === 400) {
