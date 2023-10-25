@@ -6,6 +6,8 @@ import { login } from "./api";
 import { Alert } from "@/shared/components/Alert";
 import { useAuthDispatch } from "@/shared/state/context";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { loginSuccess } from "@/shared/state/redux";
 
 export function Login({ onLoginSuccess }) {
   const { t } = useTranslation();
@@ -15,7 +17,8 @@ export function Login({ onLoginSuccess }) {
   const [errors, setErrors] = useState({});
   const [apiProgress, setApiProgress] = useState(false);
   const navigate = useNavigate();
-  const dispatch = useAuthDispatch();
+  // const dispatch = useAuthDispatch();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     setErrors((lastErrors) => {
@@ -45,7 +48,8 @@ export function Login({ onLoginSuccess }) {
         email,
         password,
       });
-      dispatch({ type: "login-success", data: response.data.user });
+      // dispatch({ type: "login-success", data: response.data.user });
+      dispatch(loginSuccess(response.data.user));
       navigate("/");
     } catch (axiosError) {
       if (axiosError.response?.data) {

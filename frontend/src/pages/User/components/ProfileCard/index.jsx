@@ -3,7 +3,8 @@ import { Button } from "@/shared/components/Button";
 import { useAuthState } from "@/shared/state/context";
 
 export function ProfileCard({ user }) {
-  const authState = useAuthState();
+  // const authState = useAuthState();
+  const authState = useSelector((store) => store.auth);
 
   return (
     <div className="card">
