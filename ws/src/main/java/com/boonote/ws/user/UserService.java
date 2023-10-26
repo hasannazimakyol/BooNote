@@ -11,6 +11,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.boonote.ws.email.EmailService;
+import com.boonote.ws.user.dto.UserDTO;
+import com.boonote.ws.user.dto.UserUpdate;
 import com.boonote.ws.user.exception.ActivationNotificationException;
 import com.boonote.ws.user.exception.InvalidTokenException;
 import com.boonote.ws.user.exception.NotFoundException;
@@ -57,8 +59,11 @@ public class UserService {
         userRepository.save(inDB);
     }
 
-    public Page<User> getUsers(Pageable page) {
-        return userRepository.findAll(page);
+    public Page<User> getUsers(Pageable page, User loggedInUser) {
+        if (loggedInUser == null) {
+            return userRepository.findAll(page);
+        }
+        return userRepository.findByIdNot(loggedInUser.getId(), page);
     }
 
     public User getUser(long id) {
@@ -67,6 +72,12 @@ public class UserService {
 
     public User findByEmail(String email) {
         return userRepository.findByEmail(email);
+    }
+
+    public User updateUser(long id, UserUpdate userUpdate) {
+        User inDB = getUser(id);
+        inDB.setUsername(userUpdate.username());
+        return userRepository.save(inDB);
     }
 
 }

@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import com.boonote.ws.auth.exception.AuthenticationException;
 import com.boonote.ws.shared.Messages;
 import com.boonote.ws.user.exception.ActivationNotificationException;
+import com.boonote.ws.user.exception.AuthorizationException;
 import com.boonote.ws.user.exception.InvalidTokenException;
 import com.boonote.ws.user.exception.NotFoundException;
 import com.boonote.ws.user.exception.NotUniqueEmailException;
@@ -28,7 +29,8 @@ public class ErrorHandler {
             ActivationNotificationException.class,
             InvalidTokenException.class,
             NotFoundException.class,
-            AuthenticationException.class
+            AuthenticationException.class,
+            AuthorizationException.class
     })
     ResponseEntity<ApiError> handleMethodArgNotValidEx(Exception exception,
             HttpServletRequest request) {
@@ -61,6 +63,8 @@ public class ErrorHandler {
             apiError.setStatus(404);
         } else if (exception instanceof AuthenticationException) {
             apiError.setStatus(401);
+        } else if (exception instanceof AuthorizationException) {
+            apiError.setStatus(403);
         }
 
         return ResponseEntity.status(apiError.getStatus()).body(apiError);
@@ -102,40 +106,44 @@ public class ErrorHandler {
     // }
 
     // @ExceptionHandler(ActivationNotificationException.class)
-    // ResponseEntity<ApiError> handleActivationNotificationException(ActivationNotificationException exception) {
-    //     ApiError apiError = new ApiError();
-    //     apiError.setPath("/api/v1/users");
-    //     apiError.setMessage(exception.getMessage());
-    //     apiError.setStatus(502);
-    //     return ResponseEntity.status(502).body(apiError);
+    // ResponseEntity<ApiError>
+    // handleActivationNotificationException(ActivationNotificationException
+    // exception) {
+    // ApiError apiError = new ApiError();
+    // apiError.setPath("/api/v1/users");
+    // apiError.setMessage(exception.getMessage());
+    // apiError.setStatus(502);
+    // return ResponseEntity.status(502).body(apiError);
     // }
 
     // @ExceptionHandler(InvalidTokenException.class)
-    // ResponseEntity<ApiError> handleInvalidTokenException(InvalidTokenException exception, HttpServletRequest request) {
-    //     ApiError apiError = new ApiError();
-    //     apiError.setPath(request.getRequestURI());
-    //     apiError.setMessage(exception.getMessage());
-    //     apiError.setStatus(400);
-    //     return ResponseEntity.status(400).body(apiError);
+    // ResponseEntity<ApiError> handleInvalidTokenException(InvalidTokenException
+    // exception, HttpServletRequest request) {
+    // ApiError apiError = new ApiError();
+    // apiError.setPath(request.getRequestURI());
+    // apiError.setMessage(exception.getMessage());
+    // apiError.setStatus(400);
+    // return ResponseEntity.status(400).body(apiError);
     // }
 
     // @ExceptionHandler(NotFoundException.class)
     // ResponseEntity<ApiError> handleNotFoundException(NotFoundException exception,
-    //         HttpServletRequest request) {
-    //     ApiError apiError = new ApiError();
-    //     apiError.setPath(request.getRequestURI());
-    //     apiError.setMessage(exception.getMessage());
-    //     apiError.setStatus(404);
-    //     return ResponseEntity.status(404).body(apiError);
+    // HttpServletRequest request) {
+    // ApiError apiError = new ApiError();
+    // apiError.setPath(request.getRequestURI());
+    // apiError.setMessage(exception.getMessage());
+    // apiError.setStatus(404);
+    // return ResponseEntity.status(404).body(apiError);
     // }
 
     // @ExceptionHandler(AuthenticationException.class)
-    // ResponseEntity<?> handleAuthenticationException(AuthenticationException exception) {
-    //     ApiError error = new ApiError();
-    //     error.setPath("/api/v1/auth");
-    //     error.setStatus(401);
-    //     error.setMessage(exception.getMessage());
-    //     return ResponseEntity.status(401).body(error);
+    // ResponseEntity<?> handleAuthenticationException(AuthenticationException
+    // exception) {
+    // ApiError error = new ApiError();
+    // error.setPath("/api/v1/auth");
+    // error.setStatus(401);
+    // error.setMessage(exception.getMessage());
+    // return ResponseEntity.status(401).body(error);
     // }
 
 }

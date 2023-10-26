@@ -8,15 +8,15 @@ import { store } from "./shared/state/redux";
 function App() {
   return (
     <>
-      {/* <AuthenticationContext> */}
-      <Provider store={store}>
+      <AuthenticationContext>
+      {/* <Provider store={store}> */}
         <NavBar />
         <div className="container mt-3">
           <Outlet />
           <LanguageSelector />
         </div>
-      </Provider>
-      {/* </AuthenticationContext> */}
+      {/* </Provider> */}
+      </AuthenticationContext>
     </>
   );
 }

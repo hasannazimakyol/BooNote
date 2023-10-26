@@ -7,5 +7,10 @@
   "passwordMismatch": "Şifreniz eşleşmiyor",
   "genericError": "Beklenmedik bir hata oluştu. Lütfen bir daha deneyin",
   "userNotFoundError": "Kullanıcı bulunanmadı",
-  "login": "Giriş Yap"
+  "login": "Giriş Yap",
+  "myProfile": "Profilim",
+  "logout": "Çıkış Yap",
+  "save": "Kaydet",
+  "cancel": "İptal",
+  "edit": "Güncelle"
 }

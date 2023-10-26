@@ -1,5 +1,6 @@
 package com.boonote.ws.user;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -7,13 +8,19 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.boonote.ws.auth.token.TokenService;
 import com.boonote.ws.shared.GenericMessage;
 import com.boonote.ws.shared.Messages;
 import com.boonote.ws.user.dto.UserCreate;
 import com.boonote.ws.user.dto.UserDTO;
+import com.boonote.ws.user.dto.UserUpdate;
+import com.boonote.ws.user.exception.AuthorizationException;
+
 import jakarta.validation.Valid;
 
 @RestController
@@ -21,6 +28,9 @@ public class UserController {
 
     // @Autowired
     UserService userService;
+
+    @Autowired
+    TokenService tokenService;
 
     UserController(UserService userService) {
         this.userService = userService;
@@ -43,13 +53,25 @@ public class UserController {
     }
 
     @GetMapping("/api/v1/users")
-    Page<UserDTO> getUsers(Pageable page) {
-        return userService.getUsers(page).map(UserDTO::new);
+    Page<UserDTO> getUsers(Pageable page,
+            @RequestHeader(name = "Authorization", required = false) String authorizationHeader) {
+        var loggedInUser = tokenService.verifyToken(authorizationHeader);
+        return userService.getUsers(page, loggedInUser).map(UserDTO::new);
     }
 
     @GetMapping("/api/v1/users/{id}")
     UserDTO getUserById(@PathVariable long id) {
         return new UserDTO(userService.getUser(id));
+    }
+
+    @PutMapping("/api/v1/users/{id}")
+    UserDTO updateUser(@PathVariable long id, @Valid @RequestBody UserUpdate UserUpdate,
+            @RequestHeader(name = "Authorization", required = false) String authorizationHeader) {
+        var loggedInUser = tokenService.verifyToken(authorizationHeader);
+        if (loggedInUser == null || loggedInUser.getId() != id) {
+            throw new AuthorizationException();
+        }
+        return new UserDTO(userService.updateUser(id, UserUpdate));
     }
 
 }
