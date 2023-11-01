@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import com.boonote.ws.auth.exception.AuthenticationException;
 import com.boonote.ws.shared.Messages;
 import com.boonote.ws.user.exception.ActivationNotificationException;
-import com.boonote.ws.user.exception.AuthorizationException;
 import com.boonote.ws.user.exception.InvalidTokenException;
 import com.boonote.ws.user.exception.NotFoundException;
 import com.boonote.ws.user.exception.NotUniqueEmailException;
@@ -29,8 +28,7 @@ public class ErrorHandler {
             ActivationNotificationException.class,
             InvalidTokenException.class,
             NotFoundException.class,
-            AuthenticationException.class,
-            AuthorizationException.class
+            AuthenticationException.class
     })
     ResponseEntity<ApiError> handleMethodArgNotValidEx(Exception exception,
             HttpServletRequest request) {
@@ -63,8 +61,6 @@ public class ErrorHandler {
             apiError.setStatus(404);
         } else if (exception instanceof AuthenticationException) {
             apiError.setStatus(401);
-        } else if (exception instanceof AuthorizationException) {
-            apiError.setStatus(403);
         }
 
         return ResponseEntity.status(apiError.getStatus()).body(apiError);

@@ -19,7 +19,6 @@ import com.boonote.ws.shared.Messages;
 import com.boonote.ws.user.dto.UserCreate;
 import com.boonote.ws.user.dto.UserDTO;
 import com.boonote.ws.user.dto.UserUpdate;
-import com.boonote.ws.user.exception.AuthorizationException;
 
 import jakarta.validation.Valid;
 
@@ -61,17 +60,8 @@ public class UserController {
     }
 
     @PutMapping("/api/v1/users/{id}")
-    @PreAuthorize("#id == #currentUser.id")
-    UserDTO updateUser(@PathVariable long id, @Valid @RequestBody UserUpdate UserUpdate,
-            @AuthenticationPrincipal CurrentUser currentUser) {
-        // Authentication authentication) {
-        // var loggedInUserId = ((CurrentUser) authentication.getPrincipal()).getId();
-
-        // var loggedInUserId = currentUser.getId();
-
-        // if (loggedInUserId != id) {
-        //     throw new AuthorizationException();
-        // }
+    @PreAuthorize("#id == principal.id")
+    UserDTO updateUser(@PathVariable long id, @Valid @RequestBody UserUpdate UserUpdate) {
         return new UserDTO(userService.updateUser(id, UserUpdate));
     }
 
