@@ -102,40 +102,44 @@ public class ErrorHandler {
     // }
 
     // @ExceptionHandler(ActivationNotificationException.class)
-    // ResponseEntity<ApiError> handleActivationNotificationException(ActivationNotificationException exception) {
-    //     ApiError apiError = new ApiError();
-    //     apiError.setPath("/api/v1/users");
-    //     apiError.setMessage(exception.getMessage());
-    //     apiError.setStatus(502);
-    //     return ResponseEntity.status(502).body(apiError);
+    // ResponseEntity<ApiError>
+    // handleActivationNotificationException(ActivationNotificationException
+    // exception) {
+    // ApiError apiError = new ApiError();
+    // apiError.setPath("/api/v1/users");
+    // apiError.setMessage(exception.getMessage());
+    // apiError.setStatus(502);
+    // return ResponseEntity.status(502).body(apiError);
     // }
 
     // @ExceptionHandler(InvalidTokenException.class)
-    // ResponseEntity<ApiError> handleInvalidTokenException(InvalidTokenException exception, HttpServletRequest request) {
-    //     ApiError apiError = new ApiError();
-    //     apiError.setPath(request.getRequestURI());
-    //     apiError.setMessage(exception.getMessage());
-    //     apiError.setStatus(400);
-    //     return ResponseEntity.status(400).body(apiError);
+    // ResponseEntity<ApiError> handleInvalidTokenException(InvalidTokenException
+    // exception, HttpServletRequest request) {
+    // ApiError apiError = new ApiError();
+    // apiError.setPath(request.getRequestURI());
+    // apiError.setMessage(exception.getMessage());
+    // apiError.setStatus(400);
+    // return ResponseEntity.status(400).body(apiError);
     // }
 
     // @ExceptionHandler(NotFoundException.class)
     // ResponseEntity<ApiError> handleNotFoundException(NotFoundException exception,
-    //         HttpServletRequest request) {
-    //     ApiError apiError = new ApiError();
-    //     apiError.setPath(request.getRequestURI());
-    //     apiError.setMessage(exception.getMessage());
-    //     apiError.setStatus(404);
-    //     return ResponseEntity.status(404).body(apiError);
+    // HttpServletRequest request) {
+    // ApiError apiError = new ApiError();
+    // apiError.setPath(request.getRequestURI());
+    // apiError.setMessage(exception.getMessage());
+    // apiError.setStatus(404);
+    // return ResponseEntity.status(404).body(apiError);
     // }
 
     // @ExceptionHandler(AuthenticationException.class)
-    // ResponseEntity<?> handleAuthenticationException(AuthenticationException exception) {
-    //     ApiError error = new ApiError();
-    //     error.setPath("/api/v1/auth");
-    //     error.setStatus(401);
-    //     error.setMessage(exception.getMessage());
-    //     return ResponseEntity.status(401).body(error);
+    // ResponseEntity<?> handleAuthenticationException(AuthenticationException
+    // exception) {
+    // ApiError error = new ApiError();
+    // error.setPath("/api/v1/auth");
+    // error.setStatus(401);
+    // error.setMessage(exception.getMessage());
+    // return ResponseEntity.status(401).body(error);
     // }
 
 }

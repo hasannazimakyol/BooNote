@@ -2,14 +2,20 @@ import logo from "@/assets/boonote.png";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 import { useAuthDispatch, useAuthState } from "../state/context";
+import { useDispatch, useSelector } from "react-redux";
+import { logoutSuccess } from "../state/redux";
+import { ProfileImage } from "./ProfileImage";
 
 export function NavBar() {
   const { t } = useTranslation();
   const authState = useAuthState();
   const dispatch = useAuthDispatch();
+  // const authState = useSelector((store) => store.auth);
+  // const dispatch = useDispatch();
 
   const onClickLogout = () => {
     dispatch({ type: "logout-success" });
+    // dispatch(logoutSuccess());
   };
 
   return (
@@ -38,7 +44,8 @@ export function NavBar() {
             <>
               <li className="nav-item">
                 <Link className="nav-link" to={`/user/${authState.id}`}>
-                  {t("myProfile")}
+                  <ProfileImage width={30} />
+                  <span className="ms-1">{authState.username}</span>
                 </Link>
               </li>
               <li className="nav-item">

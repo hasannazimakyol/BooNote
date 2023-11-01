@@ -2,15 +2,17 @@ package com.boonote.ws.user;
 
 import java.util.UUID;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.mail.MailException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.boonote.ws.configuration.CurrentUser;
 import com.boonote.ws.email.EmailService;
+import com.boonote.ws.user.dto.UserUpdate;
 import com.boonote.ws.user.exception.ActivationNotificationException;
 import com.boonote.ws.user.exception.InvalidTokenException;
 import com.boonote.ws.user.exception.NotFoundException;
@@ -24,7 +26,8 @@ public class UserService {
     // @Autowired
     UserRepository userRepository;
 
-    PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+    @Autowired
+    PasswordEncoder passwordEncoder;
 
     EmailService emailService;
 
@@ -57,8 +60,11 @@ public class UserService {
         userRepository.save(inDB);
     }
 
-    public Page<User> getUsers(Pageable page) {
-        return userRepository.findAll(page);
+    public Page<User> getUsers(Pageable page, CurrentUser currentUser) {
+        if (currentUser == null) {
+            return userRepository.findAll(page);
+        }
+        return userRepository.findByIdNot(currentUser.getId(), page);
     }
 
     public User getUser(long id) {
@@ -67,6 +73,12 @@ public class UserService {
 
     public User findByEmail(String email) {
         return userRepository.findByEmail(email);
+    }
+
+    public User updateUser(long id, UserUpdate userUpdate) {
+        User inDB = getUser(id);
+        inDB.setUsername(userUpdate.username());
+        return userRepository.save(inDB);
     }
 
 }
